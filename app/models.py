@@ -1,4 +1,4 @@
-from sqlalchemy import String, Column, Integer, Boolean
+from sqlalchemy import String, Column, Integer, Boolean, ForeignKey, DateTime, Text
 from sqlalchemy.orm import relationship
 from database import Base
 
@@ -13,10 +13,16 @@ class User(Base):
     is_bot = Column(Boolean, nullable=False)
     language_code = Column(String(45), nullable=True)
 
-
-class Conversation(Base):
-    pass
+    messages = relationship('Message', back_populates='user')
 
 
 class Message(Base):
-    pass
+    __tablename__ = 'message'
+
+    id = Column(Integer, primary_key=True)
+    message_id = Column(Integer, nullable=False)
+    text = Column(Text, nullable=True)
+    date = Column(DateTime, nullable=False)
+
+    user_id = Column(Integer, ForeignKey('user.id'))
+    user = relationship('User', back_populates='messages')
