@@ -1,9 +1,6 @@
-from fastapi import FastAPI
 from app.config import TOKEN
 from telegram import Update
 from telegram.ext import Application, CommandHandler, MessageHandler, filters, ContextTypes
-
-app = FastAPI()
 
 # Commands
 
