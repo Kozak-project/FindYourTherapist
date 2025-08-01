@@ -3,3 +3,4 @@ dotenv~=0.9.9
 python-dotenv~=1.1.1
 python-telegram-bot==22.3
 SQLAlchemy==2.0.41
+mysql-connector-python==9.4.0

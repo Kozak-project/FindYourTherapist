@@ -1,3 +1,4 @@
+import logging
 from app.database.database import SessionLocal
 from app.database.models import User, Message
 from sqlalchemy.exc import SQLAlchemyError
@@ -21,7 +22,14 @@ def save_user(user):
                             language_code=language_code)
             session.add(new_user)
             session.commit()
-    except SQLAlchemyError:
+    except SQLAlchemyError as e:
+        logging.error(f'SQLAlchemy error: {e}')
         session.rollback()
     finally:
         session.close()
+
+
+def save_message(message):
+
+
+    session = SessionLocal()

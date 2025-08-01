@@ -1,4 +1,5 @@
 from app.config import TOKEN
+from app.services.db_services import save_user
 from telegram import Update
 from telegram.ext import Application, CommandHandler, MessageHandler, filters, ContextTypes
 
@@ -22,10 +23,12 @@ def handle_response(text: str) -> str:
 async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     message_type: str = update.message.chat.type
     text: str = update.message.text
+    user = update.message.from_user
 
     if message_type != 'private':
         return
 
+    save_user(user)
     print(f'User: {update.message.chat.id} in {message_type}: "{text}"')
 
     response: str = handle_response(text)

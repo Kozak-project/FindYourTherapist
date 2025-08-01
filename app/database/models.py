@@ -1,12 +1,12 @@
-from sqlalchemy import String, Column, Integer, Boolean, ForeignKey, DateTime, Text
+from sqlalchemy import String, Column, Integer, Boolean, ForeignKey, DateTime, Text, BigInteger
 from sqlalchemy.orm import relationship
-from database import Base
+from app.database.database import Base
 
 
 class User(Base):
     __tablename__ = 'user'
 
-    id = Column(Integer, primary_key=True)
+    id = Column(BigInteger, primary_key=True)
     first_name = Column(String(45), nullable=False)
     last_name = Column(String(45), nullable=True)
     username = Column(String(45), nullable=True)
