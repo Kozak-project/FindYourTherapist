@@ -29,7 +29,19 @@ def save_user(user):
         session.close()
 
 
-def save_message(message):
-
+def save_message(message, user):
+    message_id = message.message_id
+    message_text = message.text
+    message_date = message.date
+    user_id = user.id
 
     session = SessionLocal()
+    try:
+        new_message = Message(message_id=message_id, text=message_text, date=message_date, user_id=user_id)
+        session.add(new_message)
+        session.commit()
+    except SQLAlchemyError as e:
+        logging.error(f'SQLAlchemy error: {e}')
+        session.rollback()
+    finally:
+        session.close()
