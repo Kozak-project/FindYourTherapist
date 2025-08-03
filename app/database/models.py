@@ -20,7 +20,8 @@ class Message(Base):
     __tablename__ = 'message'
 
     id = Column(Integer, primary_key=True, autoincrement=True)
-    message_id = Column(Integer, nullable=False)
+    message_id = Column(Integer, nullable=True)
+    role = Column(String(45), nullable=False)
     text = Column(Text, nullable=True)
     date = Column(DateTime, nullable=False)
 

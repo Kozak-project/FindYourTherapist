@@ -1,5 +1,6 @@
 from app.config import TOKEN
-from app.services.db_services import save_user, save_message
+from app.database.db_services import save_user, save_message
+from app.ai_agent.core import handle_response
 from telegram import Update
 from telegram.ext import Application, CommandHandler, MessageHandler, filters, ContextTypes
 
@@ -7,17 +8,6 @@ from telegram.ext import Application, CommandHandler, MessageHandler, filters, C
 
 async def start_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text('Hi, how can I help you? (feel free to use any language you want)')
-
-
-# Response
-
-def handle_response(text: str) -> str:
-    processed: str = text.lower()
-
-    if 'i need help' in processed:
-        return 'Ok let\'s begin'
-
-    return 'I don\'t understand what you wrote'
 
 
 async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -35,8 +25,9 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     response: str = handle_response(text)
 
-    print(f'Bot: {response}')
-    await update.message.reply_text(response)
+
+    print(f'Bot: {response.model_dump_json(indent=2)}')
+    await update.message.reply_text(response.output_text)
 
 
 async def error(update: Update, context: ContextTypes.DEFAULT_TYPE):

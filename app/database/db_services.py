@@ -4,7 +4,7 @@ from app.database.models import User, Message
 from sqlalchemy.exc import SQLAlchemyError
 
 
-def save_user(user):
+def save_user(user: User):
     user_id = user.id
     first_name = user.first_name
     last_name = user.last_name
@@ -29,7 +29,7 @@ def save_user(user):
         session.close()
 
 
-def save_message(message, user):
+def save_message(message: Message, user: User):
     message_id = message.message_id
     message_text = message.text
     message_date = message.date
@@ -37,7 +37,10 @@ def save_message(message, user):
 
     session = SessionLocal()
     try:
-        new_message = Message(message_id=message_id, text=message_text, date=message_date, user_id=user_id)
+        if user.is_bot:
+            new_message = Message(message_id=None, text=message_text, date=message_date, user_id=user_id, role='assistant')
+        else:
+            new_message = Message(message_id=message_id, text=message_text, date=message_date, user_id=user_id, role='user')
         session.add(new_message)
         session.commit()
     except SQLAlchemyError as e:
