@@ -1,5 +1,5 @@
 from app.config import TOKEN
-from app.database.db_services import save_user, save_message
+from app.database.db_services import save_user, save_user_message, save_bot_message
 from app.ai_agent.core import handle_response
 from telegram import Update
 from telegram.ext import Application, CommandHandler, MessageHandler, filters, ContextTypes
@@ -20,13 +20,13 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
         return
 
     save_user(user)
-    save_message(message, user)
+    save_user_message(message, user)
     print(f'User: {update.message.chat.id} in {message_type}: "{text}"')
 
     response: str = handle_response(text)
 
-
-    print(f'Bot: {response.model_dump_json(indent=2)}')
+    save_bot_message(response, message, user)
+    print(f'Bot: {response.output_text}')
     await update.message.reply_text(response.output_text)
 
 
