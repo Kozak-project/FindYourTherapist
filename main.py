@@ -1,8 +1,9 @@
+from telegram import Update
+from telegram.ext import Application, CommandHandler, MessageHandler, filters, ContextTypes
+
 from app.config import TOKEN
 from app.database.db_services import save_user, save_user_message, save_bot_message
 from app.ai_agent.core import handle_response
-from telegram import Update
-from telegram.ext import Application, CommandHandler, MessageHandler, filters, ContextTypes
 
 # Commands
 

@@ -1,8 +1,10 @@
 import logging
 import datetime
+
+from sqlalchemy.exc import SQLAlchemyError
+
 from app.database.database import SessionLocal
 from app.database.models import User, Message
-from sqlalchemy.exc import SQLAlchemyError
 
 
 def save_user(user: User) -> None:

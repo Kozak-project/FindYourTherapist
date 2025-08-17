@@ -1,5 +1,6 @@
-from app.config import OPENAI_API_KEY
 from openai import OpenAI
+
+from app.config import OPENAI_API_KEY
 
 # llm = ChatOpenAI(temperature=0.6, openai_api_key=OPENAI_API_KEY)
 
