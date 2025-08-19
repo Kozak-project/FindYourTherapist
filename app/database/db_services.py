@@ -55,8 +55,8 @@ def save_bot_message(message, user_message, user: User) -> None:
     data = message.model_dump()
 
     message_id = user_message.message_id
-    message_text = data["output"][0]["content"][0]["text"]
-    message_date = datetime.datetime.fromtimestamp(data["created_at"]) # WIP
+    message_text = data['output'][0]['content'][0]['text']
+    message_date = datetime.datetime.fromtimestamp(data['created_at']) # WIP
     user_id = user.id
 
     session = SessionLocal()
@@ -67,5 +67,21 @@ def save_bot_message(message, user_message, user: User) -> None:
     except SQLAlchemyError as e:
         logging.error(f'SQLAlchemy error: {e}')
         session.rollback()
+    finally:
+        session.close()
+
+
+def get_conversation_history(user: User):
+    session = SessionLocal()
+
+    try:
+        messages = session.query(Message).filter(Message.user_id == user.id).order_by(Message.date.asc()).all()
+
+        history = [{'role': message.role, 'content': message.text}
+        for message in messages if message.text]
+        return history
+
+    except SQLAlchemyError as e:
+        logging.error(f'SQLAlchemy error: {e}')
     finally:
         session.close()
