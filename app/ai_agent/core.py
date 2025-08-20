@@ -1,3 +1,5 @@
+import logging
+
 from openai import OpenAI
 
 from app.config import OPENAI_API_KEY
@@ -11,13 +13,13 @@ def handle_response(text: str, user):
 
     client = OpenAI()
 
-    history = get_conversation_history(user)
+    conversation = get_conversation_history(user)
 
-    history.append({'role': 'user', 'content': new_message})
+    conversation.append({'role': 'user', 'content': new_message})
 
     response = client.responses.create(
         model='gpt-4.1',
-        input=history
+        input=conversation
     )
 
     return response

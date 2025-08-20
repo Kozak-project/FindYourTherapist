@@ -83,5 +83,6 @@ def get_conversation_history(user: User):
 
     except SQLAlchemyError as e:
         logging.error(f'SQLAlchemy error: {e}')
+        session.rollback()
     finally:
         session.close()
